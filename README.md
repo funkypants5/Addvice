@@ -1,4 +1,7 @@
-download code and open VS code in the folder this is downloaded in
+pre reqs:
+download node.js from : https://nodejs.org/en/
+
+download code and open VS code in the folder this is downloaded 
 
 open terminal and run the following codes
 
