@@ -1,3 +1,7 @@
+import Dashboard from "./components/auth/dashboard";
+import Message from "./components/auth/message";
+import Onboarding from "./components/auth/onboarding";
+import Discovery from "./components/auth/discovery";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 
@@ -6,6 +10,9 @@ import Home from "./components/home";
 
 import { AuthProvider } from "./context/authContext"; 
 import { useRoutes } from "react-router-dom";
+
+import { BrowserRouter} from "react-router-dom";
+import Mentormentee from "./components/auth/currentMentorMentees";
 
 function App() {
   const routesArray = [
@@ -25,6 +32,26 @@ function App() {
       path: "/home",
       element: <Home />,
     },
+    {
+      path: "/message",
+      element: <Message />,
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
+    {
+      path: "/onboarding",
+      element: <Onboarding />,
+    },
+    {
+      path: "/discovery",
+      element: <Discovery />,
+    },
+    {
+      path: "/currentMentorMentees",
+      element: <Mentormentee />,
+    }
   ];
   let routesElement = useRoutes(routesArray);
   return (
