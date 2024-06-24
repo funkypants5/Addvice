@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const Home = () => {
+const Profile = () => {
   const { currentUser } = useAuth();
   const [formData, setFormData] = useState({
     name: currentUser.displayName || "Your Name",
@@ -111,6 +111,9 @@ const Home = () => {
                 </a>
                 <a href="/currentMentorMentees" className="">
                   Current Mentors/Mentees
+                </a>
+                <a href="/profile" className="">
+                  Profile
                 </a>
               </div>
             )}
@@ -293,4 +296,4 @@ const roles = [
   "Student",
 ];
 
-export default Home;
+export default Profile;

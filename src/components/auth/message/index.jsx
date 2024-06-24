@@ -25,7 +25,7 @@ const Message = () => {
             <a href="/currentMentorMentees" className="">
               Current Mentors/Mentees
             </a>
-            <a href="/home" className="">
+            <a href="/profile" className="">
               Profile
             </a>
           </div>
