@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { database } from "../../../firebase/firebase"; // Ensure the correct path
 import { collection, onSnapshot } from "firebase/firestore"; // Import necessary Firestore functions
 import './Discovery.css'; // Ensure correct import path
+import { Link } from "react-router-dom";
 
 const Discovery = () => {
   const [people, setPeople] = useState([]);
@@ -35,7 +36,7 @@ const Discovery = () => {
 
       <div className="profiles-container">
         {people.map(person => (
-          <div key={person.name} className="profile-box">
+          <Link to={`/viewProfile/${person.name}`} key={person.name} className="profile-box">
             <img 
               src={person.profilePicture} 
               alt={`${person.name}'s profile`} 
@@ -43,17 +44,12 @@ const Discovery = () => {
             />
             <h3>{person.name}</h3>
             <p>Age: {person.age}</p>
-            <p>Occupation: {person.occupation}</p>
             <p>Industry: {person.industry}</p>
-            <p>Role: {person.role}</p>
             <p>Gender: {person.gender}</p>
-            <p>Interests: {person.interests}</p>
-            <p>About Me: {person.AboutMe}</p>
-          </div>
+            <p>Role: {person.role}</p>
+          </Link>
         ))}
       </div>
-
-      
     </div>
   );
 };
