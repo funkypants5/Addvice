@@ -4,6 +4,7 @@ import Onboarding from "./components/auth/onboarding";
 import Discovery from "./components/auth/discovery";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
+import ViewProfile from "./components/auth/viewProfile";
 
 import Header from "./components/header";
 import Profile from "./components/profile";
@@ -51,6 +52,10 @@ function App() {
     {
       path: "/currentMentorMentees",
       element: <Mentormentee />,
+    },
+    {
+      path: "/viewProfile/:name",
+      element: <ViewProfile />,
     }
   ];
   let routesElement = useRoutes(routesArray);
