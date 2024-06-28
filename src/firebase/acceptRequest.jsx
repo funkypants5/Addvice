@@ -1,4 +1,4 @@
-import { doc, updateDoc, deleteDoc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, collection, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { database } from '../firebase/firebase'; // Ensure correct path to your Firebase configuration
 
 const acceptRequest = async (requestId, recipientUid) => {
@@ -9,16 +9,29 @@ const acceptRequest = async (requestId, recipientUid) => {
     if (requestSnapshot.exists()) {
       const requestData = requestSnapshot.data();
 
-      // Add to mentors or mentees subcollection
-      const mentorsCollection = collection(doc(database, 'users', recipientUid), 'mentors');
-      await setDoc(doc(mentorsCollection, requestData.from), requestData);
+      // Check the sender's role and add to the appropriate subcollection
+      if (requestData.role === 'mentor') {
+        const mentorsCollection = collection(doc(database, 'users', recipientUid), 'mentors');
+        await setDoc(doc(mentorsCollection, requestData.from), requestData);
+      } else if (requestData.role === 'mentee') {
+        const menteesCollection = collection(doc(database, 'users', recipientUid), 'mentees');
+        await setDoc(doc(menteesCollection, requestData.from), requestData);
+      }
 
-      // Optionally, add the recipient to the requester's mentees subcollection
-      const menteesCollection = collection(doc(database, 'users', requestData.from), 'mentees');
-      await setDoc(doc(menteesCollection, recipientUid), {
-        uid: recipientUid,
-        timestamp: new Date(),
-      });
+      // Add the recipient to the requester's subcollection
+      if (requestData.role === 'mentor') {
+        const menteesCollection = collection(doc(database, 'users', requestData.from), 'mentees');
+        await setDoc(doc(menteesCollection, recipientUid), {
+          uid: recipientUid,
+          timestamp: new Date(),
+        });
+      } else if (requestData.role === 'mentee') {
+        const mentorsCollection = collection(doc(database, 'users', requestData.from), 'mentors');
+        await setDoc(doc(mentorsCollection, recipientUid), {
+          uid: recipientUid,
+          timestamp: new Date(),
+        });
+      }
 
       // Remove the request from the requests collection
       await deleteDoc(requestDocRef);
@@ -29,7 +42,7 @@ const acceptRequest = async (requestId, recipientUid) => {
     }
   } catch (error) {
     console.error('Error accepting request:', error);
-    throw error; // Throw the error to handle it in calling code
+    throw error;
   }
 };
 
