@@ -1,4 +1,4 @@
-import { collection, addDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, doc, getDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { database } from './firebase'; // Ensure correct path to your Firebase configuration
 
@@ -8,15 +8,25 @@ const sendRequest = async (recipientUid, requesterDetails) => {
     const currentUser = auth.currentUser;
     console.log('Current User:', currentUser);
 
-
     if (currentUser) {
-      const userDocRef = doc(database, 'users', recipientUid);
-      const requestsCollection = collection(userDocRef, 'requests');
+      // Fetch the current user's role
+      const userDocRef = doc(database, 'users', currentUser.uid);
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (!userDocSnapshot.exists()) {
+        console.error('User document not found');
+        throw new Error('User document not found');
+      }
+
+      const userData = userDocSnapshot.data();
+      const userRole = userData.role; // Assuming the role is stored as 'role' in user document
+
+      const requestsCollection = collection(doc(database, 'users', recipientUid), 'requests');
 
       const requestDoc = {
         from: currentUser.uid,
         to: recipientUid,
         details: requesterDetails,
+        role: userRole, // Include the sender's role
         status: 'pending',
         timestamp: new Date(),
       };
@@ -35,8 +45,3 @@ const sendRequest = async (recipientUid, requesterDetails) => {
 };
 
 export default sendRequest;
-
-
-
-
-

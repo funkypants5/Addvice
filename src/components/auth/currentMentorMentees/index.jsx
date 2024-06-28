@@ -85,15 +85,29 @@ const CurrentMentorMentee = () => {
         if (requestSnapshot.exists()) {
           const requestData = requestSnapshot.data();
 
-          // Add to mentors or mentees subcollection
-          const mentorsCollection = collection(doc(database, 'users', currentUser.uid), 'mentors');
-          await setDoc(doc(mentorsCollection, requestData.from), requestData);
+          // Check the sender's role and add to the appropriate subcollection
+          if (requestData.role === 'mentor') {
+            const mentorsCollection = collection(doc(database, 'users', currentUser.uid), 'mentors');
+            await setDoc(doc(mentorsCollection, requestData.from), requestData);
+          } else if (requestData.role === 'mentee') {
+            const menteesCollection = collection(doc(database, 'users', currentUser.uid), 'mentees');
+            await setDoc(doc(menteesCollection, requestData.from), requestData);
+          }
 
-          const menteesCollection = collection(doc(database, 'users', requestData.from), 'mentees');
-          await setDoc(doc(menteesCollection, currentUser.uid), {
-            uid: currentUser.uid,
-            timestamp: new Date(),
-          });
+          // Add the recipient to the requester's subcollection
+          if (requestData.role === 'mentor') {
+            const menteesCollection = collection(doc(database, 'users', requestData.from), 'mentees');
+            await setDoc(doc(menteesCollection, currentUser.uid), {
+              uid: currentUser.uid,
+              timestamp: new Date(),
+            });
+          } else if (requestData.role === 'mentee') {
+            const mentorsCollection = collection(doc(database, 'users', requestData.from), 'mentors');
+            await setDoc(doc(mentorsCollection, currentUser.uid), {
+              uid: currentUser.uid,
+              timestamp: new Date(),
+            });
+          }
 
           // Remove the request from the requests collection
           await deleteDoc(requestRef);
@@ -171,10 +185,7 @@ const CurrentMentorMentee = () => {
             <p>Age: {mentee.age}</p>
             <p>Occupation: {mentee.occupation}</p>
             <p>Industry: {mentee.industry}</p>
-            <p>Role: {mentee.role}</p>
             <p>Gender: {mentee.gender}</p>
-            <p>Interests: {mentee.interests}</p>
-            <p>About Me: {mentee.AboutMe}</p>
           </li>
         ))}
       </ul>
