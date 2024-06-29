@@ -4,13 +4,13 @@ import { database } from '../../../firebase/firebase';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import './currentMentorMentee.css';
+import Navbar from '../../navbar/navbar';
 
 const CurrentMentorMentee = () => {
   const [requests, setRequests] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [mentees, setMentees] = useState([]);
   const navigate = useNavigate();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -111,73 +111,81 @@ const CurrentMentorMentee = () => {
     }
   };
 
+  const rejectRequest = async (requestId) => {
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const requestRef = doc(database, 'users', currentUser.uid, 'requests', requestId);
+        await deleteDoc(requestRef);
+        console.log('Request rejected successfully');
+        setRequests(prevRequests => prevRequests.filter(request => request.id !== requestId));
+      } else {
+        console.error('User not authenticated');
+      }
+    } catch (error) {
+      console.error('Error rejecting request:', error);
+    }
+  };
+
   const handleProfileClick = (name) => {
     navigate(`/viewProfile/${name}`);
   };
 
   return (
-    <div className="container">
-      <h1>Requests</h1>
-      <div className="">
-        <button
-          className=""
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        >
-          Features
-        </button>
-        {isDropdownOpen && (
-          <div className="">
-            <a href="/discovery" className="">
-              Discover
-            </a>
-            <a href="/message" className="">
-              Message
-            </a>
-            <a href="/currentMentorMentees" className="">
-              Current Mentors/Mentees
-            </a>
-            <a href="/profile" className="">
-              Profile
-            </a>
-          </div>
-        )}
+    <div>
+      <Navbar />
+      <div className="container">
+        <div className="Feature-Description">
+          <h1 className="title">Current Mentor/Mentee</h1>
+          <p>Manage your current mentorship and menteeship relationships. Accept or reject requests, and connect with mentors and mentees.</p>
+        </div>
+      <div className='section'> 
+        <h2>Requests</h2>
+        <ul>
+          {requests.map(request => (
+            <li key={request.id}>
+              <p>From: {request.from}</p>
+              <p>Status: {request.status}</p>
+              <button className="Nav-button" onClick={() => acceptRequest(request.id)}>Accept Request</button>
+              <button className="Nav-button reject-button" onClick={() => rejectRequest(request.id)}>Reject Request</button>
+            </li>
+          ))}
+        </ul>
+        </div>
+        <div className='section'> 
+        <h2>Mentors</h2>
+        <ul>
+          {mentors.map(mentor => (
+            <li key={mentor.id} className="profile-box" onClick={() => handleProfileClick(mentor.name)}>
+              <h3>{mentor.name}</h3>
+              <p>Age: {mentor.age}</p>
+              <p>Occupation: {mentor.occupation}</p>
+              <p>Industry: {mentor.industry}</p>
+              <p>Gender: {mentor.gender}</p>
+            </li>
+          ))}
+        </ul>
+        </div>
+        <div className='section'> 
+        <h2>Mentees</h2>
+        <ul>
+          {mentees.map(mentee => (
+            <li key={mentee.id} className="profile-box" onClick={() => handleProfileClick(mentee.name)}>
+              <h3>{mentee.name}</h3>
+              <p>Age: {mentee.age}</p>
+              <p>Occupation: {mentee.occupation}</p>
+              <p>Industry: {mentee.industry}</p>
+              <p>Role: {mentee.role}</p>
+              <p>Gender: {mentee.gender}</p>
+              <p>Interests: {mentee.interests}</p>
+              <p>About Me: {mentee.AboutMe}</p>
+            </li>
+          ))}
+        </ul>
+        </div>
       </div>
-      <ul>
-        {requests.map(request => (
-          <li key={request.id}>
-            <p>From: {request.from}</p>
-            <p>Status: {request.status}</p>
-            <button onClick={() => acceptRequest(request.id)}>Accept Request</button>
-          </li>
-        ))}
-      </ul>
-      <h2>Mentors</h2>
-      <ul>
-        {mentors.map(mentor => (
-          <li key={mentor.id} className="profile-box" onClick={() => handleProfileClick(mentor.name)}>
-            <h3>{mentor.name}</h3>
-            <p>Age: {mentor.age}</p>
-            <p>Occupation: {mentor.occupation}</p>
-            <p>Industry: {mentor.industry}</p>
-            <p>Gender: {mentor.gender}</p>
-          </li>
-        ))}
-      </ul>
-      <h2>Mentees</h2>
-      <ul>
-        {mentees.map(mentee => (
-          <li key={mentee.id} className="profile-box" onClick={() => handleProfileClick(mentee.name)}>
-            <h3>{mentee.name}</h3>
-            <p>Age: {mentee.age}</p>
-            <p>Occupation: {mentee.occupation}</p>
-            <p>Industry: {mentee.industry}</p>
-            <p>Role: {mentee.role}</p>
-            <p>Gender: {mentee.gender}</p>
-            <p>Interests: {mentee.interests}</p>
-            <p>About Me: {mentee.AboutMe}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

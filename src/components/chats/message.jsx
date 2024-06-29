@@ -21,16 +21,16 @@ const Message = () => {
     <div className="message-container">
       <div className="top">
         <div className="user">
-          <img src={require("../chat-images/avatar.png")} alt="" />
+          <img src={require("./chat-images/avatar.png")} alt="" />
           <div className="texts">
             <span>Jane Doe</span>
             <p>Lorem Ipsum Dolor, sit amet.</p>
           </div>
         </div>
         <div className="icons">
-          <img src={require("../chat-images/phone.png")} alt="" />
-          <img src={require("../chat-images/video.png")} alt="" />
-          <img src={require("../chat-images/info.png")} alt="" />
+          <img src={require("./chat-images/phone.png")} alt="" />
+          <img src={require("./chat-images/video.png")} alt="" />
+          <img src={require("./chat-images/info.png")} alt="" />
         </div>
       </div>
       <div className="center">
@@ -41,7 +41,7 @@ const Message = () => {
             <span>1 min ago </span>
           </div>
           <div className="message">
-            <img src={require("../chat-images/avatar.png")} alt="" />
+            <img src={require("./chat-images/avatar.png")} alt="" />
             <div className="texts">
 
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tincidunt et ipsum et vehicula. Integer vulputate erat eros, at mattis tortor condimentum quis. Duis ac est eget velit laoreet faucibus. Pellentesque id aliquam ligula. Suspendisse potenti. Proin vel arcu at felis ultricies viverra vitae volutpat tellus.</p>
@@ -55,7 +55,7 @@ const Message = () => {
             </div>
           </div>
           <div className="message">
-            <img src={require("../chat-images/avatar.png")} alt="" />
+            <img src={require("./chat-images/avatar.png")} alt="" />
             <div className="texts">
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tincidunt et ipsum et vehicula. Integer vulputate erat eros, at mattis tortor condimentum quis. Duis ac est eget velit laoreet faucibus. Pellentesque id aliquam ligula. Suspendisse potenti. Proin vel arcu at felis ultricies viverra vitae volutpat tellus.</p>
               <span>1 min ago </span>
@@ -68,7 +68,7 @@ const Message = () => {
             </div>
           </div>
           <div className="message">
-            <img src={require("../chat-images/avatar.png")} alt="" />
+            <img src={require("./chat-images/avatar.png")} alt="" />
             <div className="texts">
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tincidunt et ipsum et vehicula. Integer vulputate erat eros, at mattis tortor condimentum quis. Duis ac est eget velit laoreet faucibus. Pellentesque id aliquam ligula. Suspendisse potenti. Proin vel arcu at felis ultricies viverra vitae volutpat tellus.</p>
               <span>1 min ago </span>
@@ -79,9 +79,9 @@ const Message = () => {
       </div>
       <div className="bottom">
         <div className="icons">
-          <img src={require("../chat-images/img.png")} alt="" />
-          <img src={require("../chat-images/camera.png")} alt="" />
-          <img src={require("../chat-images/mic.png")} alt="" />
+          <img src={require("./chat-images/img.png")} alt="" />
+          <img src={require("./chat-images/camera.png")} alt="" />
+          <img src={require("./chat-images/mic.png")} alt="" />
         </div>
         <input
           type="text"
@@ -91,7 +91,7 @@ const Message = () => {
         />
         <div className="emoji">
           <img
-            src={require("../chat-images/emoji.png")}
+            src={require("./chat-images/emoji.png")}
             alt=""
             onClick={() => setOpen((prev) => !prev)}
           />

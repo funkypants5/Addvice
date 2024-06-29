@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import "./firebaseConfig"; // Ensure Firebase is initialized
-import {
-  getFirestore,
-  getDoc,
-  doc,
-  setDoc,
-} from "firebase/firestore";
+import {getFirestore, getDoc, doc, setDoc} from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Navbar from '../navbar/navbar';
+import "./updateProfile.css"
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -19,6 +16,7 @@ const Profile = () => {
     role: "mentee", // default value
     gender: "male", // default value
     interests: "",
+    AboutMe: "", // corrected field name
     profilePicture: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -29,12 +27,12 @@ const Profile = () => {
   }, []);
 
   const fetchUserData = async () => {
-    const db = getFirestore(); // Get Firestore instance
-    const userDocRef = doc(db, "users", currentUser.uid); // Reference to user document
-    const userDocSnapshot = await getDoc(userDocRef); // Get user document snapshot
+    const db = getFirestore();
+    const userDocRef = doc(db, "users", currentUser.uid); 
+    const userDocSnapshot = await getDoc(userDocRef); 
     if (userDocSnapshot.exists()) {
-      const userData = userDocSnapshot.data(); // Extract user data from snapshot
-      setFormData(userData); // Set form data with user data
+      const userData = userDocSnapshot.data(); 
+      setFormData(userData); 
     }
   };
 
@@ -69,13 +67,12 @@ const Profile = () => {
       profilePictureURL = await uploadProfilePicture(storage, formData.profilePicture);
     }
 
-    // Save form data to Firestore
     const userDocRef = doc(db, "users", currentUser.uid); // Reference to user document
     await setDoc(userDocRef, {
       ...formData,
       profilePicture: profilePictureURL,
-    }); // Set user document with form data
-    alert("Document written to Database");
+    }); 
+    alert("Profile Updated!");
   };
 
   const uploadProfilePicture = async (storage, profilePicture) => {
@@ -91,38 +88,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="">
-      <div className="">
-        <div className="">
-          <div className="">
-            <button
-              className=""
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              Features
-            </button>
-            {isDropdownOpen && (
-              <div className="">
-                <a href="/discovery" className="">
-                  Discover
-                </a>
-                <a href="/message" className="">
-                  Message
-                </a>
-                <a href="/currentMentorMentees" className="">
-                  Current Mentors/Mentees
-                </a>
-                <a href="/profile" className="">
-                  Profile
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-        <div>
-          <h1 className="">Welcome to Addvise</h1>
-          <h2 className="">Update Your Profile</h2>
-          <p>Keep your profile up to date to get the best experience.</p>
+    <div className="profile-container">
+      <Navbar />
+      <div className="content-container">
+        <div className="feature-description">
+          <h1 className="section-title">Update Your Profile</h1>
+          <p className="section-text">Keep your profile up to date to get the best experience.</p>
         </div>
 
         <div className="onboarding">
@@ -141,14 +112,13 @@ const Profile = () => {
                       alt="Profile"
                     />
                   ) : (
-                    <div>Upload</div>
+                    <div>Upload your profile picture here!</div>
                   )}
                   <input
                     type="file"
                     name="profilePicture"
                     accept="image/*"
                     onChange={handleChange}
-                    className=""
                   />
                 </label>
               </div>
@@ -161,7 +131,6 @@ const Profile = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className=""
                 placeholder="Handsome Zack"
                 required
               />
@@ -171,7 +140,6 @@ const Profile = () => {
                 name="age"
                 value={formData.age}
                 onChange={handleChange}
-                className=""
                 required
               >
                 <option value="">Age</option>
@@ -203,7 +171,6 @@ const Profile = () => {
                 name="industry"
                 value={formData.industry}
                 onChange={handleChange}
-                className=""
                 required
               >
                 <option value="">Select Industry</option>
@@ -218,7 +185,6 @@ const Profile = () => {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className=""
                 disabled={isSubmitted}
                 required
               >
@@ -231,7 +197,6 @@ const Profile = () => {
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className=""
                 disabled={isSubmitted}
                 required
               >
@@ -240,16 +205,17 @@ const Profile = () => {
                 <option value="Other">Prefer not to say</option>
               </select>
 
-              <label htmlFor="about">About Me</label>
+              <label htmlFor="AboutMe">About Me</label>
               <textarea
+                id="AboutMe"
                 name="AboutMe"
                 value={formData.AboutMe}
                 onChange={handleChange}
                 className=""
                 required
-                placeholder="I like to explore new things!"
+                placeholder="Share more about yourself here!"
               />
-              <button type="submit" className="">
+              <button type="submit" className="update-button">
                 Update Profile
               </button>
             </section>

@@ -21,44 +21,8 @@ body {
   font-size: 90px;
   color: white;
 }
-.primary-button {
-  color: black;
-  text-transform: uppercase;
-  font-size: 15px;
-  background: linear-gradient(319deg, #bbff99 0%, #ffec99 37%, #ff9999 100%);
-  padding: 12px 30px;
-  border-radius: 30px;
-  border: none;
-}
-
-.primary-button:hover {
-  background: linear-gradient(319deg, #ff9999 0%, #ffec99 37%, #bbff99 100%);
-  transition-duration: 300s;
-}
 
 /*--------header-----*/
-
-nav {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-nav .nav-button {
-  color: #ff9999;
-  background-color: rgb(245, 245, 245);
-  font-size: 20px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  margin: 10px;
-}
-
-nav .logo-container .logo {
-  margin: 15px;
-  width: 100%;
-}
-
 h2 {
   font-style: italic;
 }
@@ -131,7 +95,7 @@ input[type="email"] {
   border-radius: 10px;
 }
 
-.onboarding form Select {
+.onboarding form select {
   padding: 10px 30px;
   font-size: 15px;
   border-radius: 10px;
@@ -187,28 +151,3 @@ input[type="email"] {
 .onboarding form .photo-container img {
   width: 100%;
 }
-
-.profiles-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.profile-box {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.profile-picture {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 16px;
-}
-

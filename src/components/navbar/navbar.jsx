@@ -1,31 +1,30 @@
 import React, { useState } from 'react';
+import "./navbar.css"
 
-const Message = () => {
+const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <h1 className="text-4xl font-bold text-green-700">Message</h1>
-      
-      <div className="">
+    <div>
+      <div className="navbar-container">
         <button
-          className=""
+          className="Nav-button"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           Features
         </button>
         {isDropdownOpen && (
-          <div className="">
-            <a href="/discovery" className="">
+          <div className="dropdown">
+            <a href="/discovery" className="dropdown-item">
               Discover
             </a>
-            <a href="/message" className="">
+            <a href="/messagingpage" className="dropdown-item">
               Message
             </a>
-            <a href="/currentMentorMentees" className="">
+            <a href="/currentMentorMentees" className="dropdown-item">
               Current Mentors/Mentees
             </a>
-            <a href="/profile" className="">
+            <a href="/profile" className="dropdown-item">
               Profile
             </a>
           </div>
@@ -35,4 +34,4 @@ const Message = () => {
   );
 };
 
-export default Message;
+export default Navbar;

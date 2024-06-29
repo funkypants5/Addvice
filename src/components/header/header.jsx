@@ -2,17 +2,18 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import { doSignOut } from "../../firebase/auth";
-import Logo1 from "../../components/images/Logo1.png";
 import Logo2 from "../../components/images/Logo2.png";
 import Logo3 from "../../components/images/Testpic.png";
+import "./header.css"
 
 const Header = () => {
   const navigate = useNavigate();
   const minimal = true;
   const { userLoggedIn } = useAuth();
   return (
-    <nav className="logo-container">
+    <nav className="header-container">
       <img className="logo" src={minimal ? Logo3 : Logo2} alt="Logo" />
+      <p className="primary-title">Share your Experience</p>
       {userLoggedIn ? (
         <>
           <button
