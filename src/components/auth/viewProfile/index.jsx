@@ -71,7 +71,30 @@ const ViewProfile = () => {
 
   return (
     <div className="profile-container">
-      <Navbar />
+      <div className="">
+        <button
+          className=""
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          Features
+        </button>
+        {isDropdownOpen && (
+          <div className="">
+            <a href="/discovery" className="">
+              Discover
+            </a>
+            <a href="/message" className="">
+              Message
+            </a>
+            <a href="/currentMentorMentees" className="">
+              Current Mentors/Mentees
+            </a>
+            <a href="/profile" className="">
+              Profile
+            </a>
+          </div>
+        )}
+      </div>
       <img src={person.profilePicture} alt={`${person.name}'s profile`} className="profile-picture" />
       <h2>{person.name}</h2>
       <p>UID: {person.uid}</p>

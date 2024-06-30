@@ -85,15 +85,34 @@ const CurrentMentorMentee = () => {
         if (requestSnapshot.exists()) {
           const requestData = requestSnapshot.data();
 
-          // Add to mentors or mentees subcollection
-          const mentorsCollection = collection(doc(database, 'users', currentUser.uid), 'mentors');
-          await setDoc(doc(mentorsCollection, requestData.from), requestData);
+          // Fetch current user's profile to determine their role
+          const currentUserProfileRef = doc(database, 'users', currentUser.uid);
+          const currentUserProfileSnapshot = await getDoc(currentUserProfileRef);
+          const currentUserProfile = currentUserProfileSnapshot.exists() ? currentUserProfileSnapshot.data() : null;
 
-          const menteesCollection = collection(doc(database, 'users', requestData.from), 'mentees');
-          await setDoc(doc(menteesCollection, currentUser.uid), {
-            uid: currentUser.uid,
-            timestamp: new Date(),
-          });
+          if (!currentUserProfile) {
+            console.error('Current user profile not found');
+            return;
+          }
+
+          // Determine the role of the current user and the sender, and add to the appropriate subcollection
+          if (currentUserProfile.role === 'mentor') {
+            const menteesCollection = collection(doc(database, 'users', currentUser.uid), 'mentees');
+            await setDoc(doc(menteesCollection, requestData.from), requestData);
+            const mentorsCollection = collection(doc(database, 'users', requestData.from), 'mentors');
+            await setDoc(doc(mentorsCollection, currentUser.uid), {
+              uid: currentUser.uid,
+              timestamp: new Date(),
+            });
+          } else if (currentUserProfile.role === 'mentee') {
+            const mentorsCollection = collection(doc(database, 'users', currentUser.uid), 'mentors');
+            await setDoc(doc(mentorsCollection, requestData.from), requestData);
+            const menteesCollection = collection(doc(database, 'users', requestData.from), 'mentees');
+            await setDoc(doc(menteesCollection, currentUser.uid), {
+              uid: currentUser.uid,
+              timestamp: new Date(),
+            });
+          }
 
           // Remove the request from the requests collection
           await deleteDoc(requestRef);
@@ -141,49 +160,46 @@ const CurrentMentorMentee = () => {
           <h1 className="title">Current Mentor/Mentee</h1>
           <p>Manage your current mentorship and menteeship relationships. Accept or reject requests, and connect with mentors and mentees.</p>
         </div>
-      <div className='section'> 
-        <h2>Requests</h2>
-        <ul>
-          {requests.map(request => (
-            <li key={request.id}>
-              <p>From: {request.from}</p>
-              <p>Status: {request.status}</p>
-              <button className="Nav-button" onClick={() => acceptRequest(request.id)}>Accept Request</button>
-              <button className="Nav-button reject-button" onClick={() => rejectRequest(request.id)}>Reject Request</button>
-            </li>
-          ))}
-        </ul>
+        <div className='section'> 
+          <h2>Requests</h2>
+          <ul>
+            {requests.map(request => (
+              <li key={request.id}>
+                <p>From: {request.from}</p>
+                <p>Status: {request.status}</p>
+                <button className="Nav-button" onClick={() => acceptRequest(request.id)}>Accept Request</button>
+                <button className="Nav-button reject-button" onClick={() => rejectRequest(request.id)}>Reject Request</button>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className='section'> 
-        <h2>Mentors</h2>
-        <ul>
-          {mentors.map(mentor => (
-            <li key={mentor.id} className="profile-box" onClick={() => handleProfileClick(mentor.name)}>
-              <h3>{mentor.name}</h3>
-              <p>Age: {mentor.age}</p>
-              <p>Occupation: {mentor.occupation}</p>
-              <p>Industry: {mentor.industry}</p>
-              <p>Gender: {mentor.gender}</p>
-            </li>
-          ))}
-        </ul>
+          <h2>Mentors</h2>
+          <ul>
+            {mentors.map(mentor => (
+              <li key={mentor.id} className="profile-box" onClick={() => handleProfileClick(mentor.name)}>
+                <h3>{mentor.name}</h3>
+                <p>Age: {mentor.age}</p>
+                <p>Occupation: {mentor.occupation}</p>
+                <p>Industry: {mentor.industry}</p>
+                <p>Gender: {mentor.gender}</p>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className='section'> 
-        <h2>Mentees</h2>
-        <ul>
-          {mentees.map(mentee => (
-            <li key={mentee.id} className="profile-box" onClick={() => handleProfileClick(mentee.name)}>
-              <h3>{mentee.name}</h3>
-              <p>Age: {mentee.age}</p>
-              <p>Occupation: {mentee.occupation}</p>
-              <p>Industry: {mentee.industry}</p>
-              <p>Role: {mentee.role}</p>
-              <p>Gender: {mentee.gender}</p>
-              <p>Interests: {mentee.interests}</p>
-              <p>About Me: {mentee.AboutMe}</p>
-            </li>
-          ))}
-        </ul>
+          <h2>Mentees</h2>
+          <ul>
+            {mentees.map(mentee => (
+              <li key={mentee.id} className="profile-box" onClick={() => handleProfileClick(mentee.name)}>
+                <h3>{mentee.name}</h3>
+                <p>Age: {mentee.age}</p>
+                <p>Occupation: {mentee.occupation}</p>
+                <p>Industry: {mentee.industry}</p>
+                <p>Gender: {mentee.gender}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
