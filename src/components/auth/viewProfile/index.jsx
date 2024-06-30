@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { database } from "../../../firebase/firebase";
+import { database } from '../../../lib/firebase';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 import './viewProfile.css';
-import sendRequest from '../../../firebase/sendRequest';
+import sendRequest from '../../../lib/sendRequest';
 import Navbar from '../../navbar/navbar';
 
 const ViewProfile = () => {

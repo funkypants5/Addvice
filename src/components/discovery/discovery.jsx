@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { database } from "../../firebase/firebase"; // Ensure the correct path
-import { collection, onSnapshot } from "firebase/firestore"; // Import necessary Firestore functions
-import './Discovery.css'; // Ensure correct import path
+import { database } from "../../lib/firebase";
+import { collection, onSnapshot } from "firebase/firestore"; 
+import './Discovery.css'; 
 import Navbar from '../navbar/navbar';
 import { Link } from "react-router-dom";
 
@@ -16,17 +16,16 @@ const Discovery = () => {
     const unsubscribe = onSnapshot(collection(database, 'users'), snapshot => {
       const peopleData = snapshot.docs.map(doc => doc.data());
       setPeople(peopleData);
-      setFilteredPeople(peopleData); // Initialize filtered list with all people
+      setFilteredPeople(peopleData); 
     });
 
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    // Filter people based on selected categories
     const filtered = people.filter(person => {
-      const industryMatch = showIndustry ? true : person.industry === "Your Industry"; // Adjust condition based on your data
-      const roleMatch = showRole ? true : person.role === "Your Role"; // Adjust condition based on your data
+      const industryMatch = showIndustry ? true : person.industry === "Your Industry"; 
+      const roleMatch = showRole ? true : person.role === "Your Role"; 
       return industryMatch && roleMatch;
     });
     setFilteredPeople(filtered);

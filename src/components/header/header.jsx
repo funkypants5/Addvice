@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
-import { doSignOut } from "../../firebase/auth";
+import { doSignOut } from "../../lib/auth";
 import Logo2 from "../../components/images/Logo2.png";
 import Logo3 from "../../components/images/Testpic.png";
 import "./header.css"
