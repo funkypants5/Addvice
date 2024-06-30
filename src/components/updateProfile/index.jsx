@@ -1,54 +1,64 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/authContext";
-import "./firebaseConfig"; // Ensure Firebase is initialized
-import {
-  getFirestore,
-  getDoc,
-  doc,
-  setDoc,
-} from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import "./firebaseConfig";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import upload from "../../lib/uploadPic";
+import Navbar from "../navbar/navbar";
+
+import "./updateProfile.css";
 
 const Profile = () => {
   const { currentUser } = useAuth();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [avatar, setAvatar] = useState({
+    file: "",
+    url: "",
+  });
+
   const [formData, setFormData] = useState({
     name: currentUser.displayName || "Your Name",
     age: "",
     occupation: "",
     industry: "",
-    role: "mentee", // default value
-    gender: "male", // default value
-    interests: "",
-    profilePicture: "",
+    role: "",
+    gender: "",
+    AboutMe: "",
+    avatar: "",
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    fetchUserData(); // Fetch user data when component mounts
+    fetchUserData();
   }, []);
 
   const fetchUserData = async () => {
-    const db = getFirestore(); // Get Firestore instance
-    const userDocRef = doc(db, "users", currentUser.uid); // Reference to user document
-    const userDocSnapshot = await getDoc(userDocRef); // Get user document snapshot
+    const db = getFirestore();
+    const userDocRef = doc(db, "users", currentUser.uid);
+    const userDocSnapshot = await getDoc(userDocRef);
     if (userDocSnapshot.exists()) {
-      const userData = userDocSnapshot.data(); // Extract user data from snapshot
-      setFormData(userData); // Set form data with user data
+      const userData = userDocSnapshot.data();
+      setFormData(userData);
+      if (userData.avatar) {
+        setAvatar({
+          file: "",
+          url: userData.avatar,
+        });
+      }
     }
   };
 
   const handleChange = (event) => {
-    const { name, value, files } = event.target;
-    if (name === "profilePicture" && files.length > 0) {
-      setFormData((prevData) => ({
-        ...prevData,
-        profilePicture: files[0], // Store the file object
-      }));
+    const { name, files } = event.target;
+    if (name === "avatar" && files.length > 0) {
+      setAvatar({
+        file: files[0],
+        url: URL.createObjectURL(files[0]),
+      });
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value,
+        [name]: event.target.value,
       }));
     }
   };
@@ -60,69 +70,41 @@ const Profile = () => {
   };
 
   const saveDataToFirestore = async () => {
-    const db = getFirestore(); // Get Firestore instance
-    const storage = getStorage(); // Get Firebase Storage instance
+    const db = getFirestore();
+    const storage = getStorage();
 
-    // Upload profile picture if it exists
-    let profilePictureURL = "";
-    if (formData.profilePicture instanceof File) {
-      profilePictureURL = await uploadProfilePicture(storage, formData.profilePicture);
+    let imgUrl = formData.avatar; // Default to existing avatar URL
+
+    if (avatar.file) {
+      imgUrl = await upload(avatar.file); // Upload new avatar and get URL
     }
 
-    // Save form data to Firestore
-    const userDocRef = doc(db, "users", currentUser.uid); // Reference to user document
-    await setDoc(userDocRef, {
+    await setDoc(doc(db, "users", currentUser.uid), {
       ...formData,
-      profilePicture: profilePictureURL,
-    }); // Set user document with form data
-    alert("Document written to Database");
-  };
+      avatar: imgUrl, // Update avatar URL in Firestore
+      id: currentUser.uid,
+    });
+    alert("Profile Updated!");
 
-  const uploadProfilePicture = async (storage, profilePicture) => {
-    try {
-      const storageRef = ref(storage, `profilePictures/${currentUser.uid}/${profilePicture.name}`);
-      await uploadBytes(storageRef, profilePicture);
-      const downloadURL = await getDownloadURL(storageRef);
-      return downloadURL;
-    } catch (error) {
-      console.error("Error uploading profile picture:", error);
-      throw error;
-    }
+    await setDoc(doc(db, "userchats", currentUser.uid), {
+      chats: [],
+    });
+
+    setFormData((prevData) => ({
+      ...prevData,
+      avatar: imgUrl, // Update formData with new avatar URL
+    }));
   };
 
   return (
-    <div className="">
-      <div className="">
-        <div className="">
-          <div className="">
-            <button
-              className=""
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              Features
-            </button>
-            {isDropdownOpen && (
-              <div className="">
-                <a href="/discovery" className="">
-                  Discover
-                </a>
-                <a href="/message" className="">
-                  Message
-                </a>
-                <a href="/currentMentorMentees" className="">
-                  Current Mentors/Mentees
-                </a>
-                <a href="/profile" className="">
-                  Profile
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-        <div>
-          <h1 className="">Welcome to Addvise</h1>
-          <h2 className="">Update Your Profile</h2>
-          <p>Keep your profile up to date to get the best experience.</p>
+    <div className="profile-container">
+      <Navbar />
+      <div className="content-container">
+        <div className="feature-description">
+          <h1 className="section-title">Update Your Profile</h1>
+          <p className="section-text">
+            Keep your profile up to date to get the best experience.
+          </p>
         </div>
 
         <div className="onboarding">
@@ -130,25 +112,16 @@ const Profile = () => {
             <section className="photo-section">
               <div className="photo-container">
                 <label>
-                  {formData.profilePicture && !(formData.profilePicture instanceof File) ? (
-                    <img
-                      src={formData.profilePicture}
-                      alt="Profile"
-                    />
-                  ) : formData.profilePicture ? (
-                    <img
-                      src={URL.createObjectURL(formData.profilePicture)}
-                      alt="Profile"
-                    />
+                  {avatar.url ? (
+                    <img src={avatar.url} alt="avatar" />
                   ) : (
-                    <div>Upload</div>
+                    <div>Upload your profile picture here!</div>
                   )}
                   <input
                     type="file"
-                    name="profilePicture"
+                    name="avatar"
                     accept="image/*"
                     onChange={handleChange}
-                    className=""
                   />
                 </label>
               </div>
@@ -161,8 +134,7 @@ const Profile = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className=""
-                placeholder="Handsome Zack"
+                placeholder="Your Name"
                 required
               />
               <label className="multiple-input-container">Age</label>
@@ -171,7 +143,6 @@ const Profile = () => {
                 name="age"
                 value={formData.age}
                 onChange={handleChange}
-                className=""
                 required
               >
                 <option value="">Age</option>
@@ -191,7 +162,7 @@ const Profile = () => {
                 className=""
                 required
               >
-                <option value="">Select Role</option>
+                <option value="">Select Occupation</option>
                 {roles.map((role) => (
                   <option key={role} value={role}>
                     {role}
@@ -203,7 +174,6 @@ const Profile = () => {
                 name="industry"
                 value={formData.industry}
                 onChange={handleChange}
-                className=""
                 required
               >
                 <option value="">Select Industry</option>
@@ -216,9 +186,9 @@ const Profile = () => {
               <label className="">Role</label>
               <select
                 name="role"
+                placeholder="Selct Role"
                 value={formData.role}
                 onChange={handleChange}
-                className=""
                 disabled={isSubmitted}
                 required
               >
@@ -231,8 +201,8 @@ const Profile = () => {
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className=""
                 disabled={isSubmitted}
+                placeholder="Selct Gender"
                 required
               >
                 <option value="male">Male</option>
@@ -240,16 +210,17 @@ const Profile = () => {
                 <option value="Other">Prefer not to say</option>
               </select>
 
-              <label htmlFor="about">About Me</label>
+              <label htmlFor="AboutMe">About Me</label>
               <textarea
+                id="AboutMe"
                 name="AboutMe"
                 value={formData.AboutMe}
                 onChange={handleChange}
                 className=""
                 required
-                placeholder="I like to explore new things!"
+                placeholder="Tell us about yourself..."
               />
-              <button type="submit" className="">
+              <button type="submit" className="update-button">
                 Update Profile
               </button>
             </section>

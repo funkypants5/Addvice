@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Chatlist from '../chat-lists/chatlist';
-import Userinfo from '../chat-lists/userinfo';
+import Chatlist from './chat-lists/chatlist';
+import Userinfo from './chat-lists/userinfo';
 import './chats.css';
 
 const Chatdetail = () => { 

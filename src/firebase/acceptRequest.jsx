@@ -4,8 +4,8 @@ import { database } from '../firebase/firebase'; // Ensure correct path to your 
 const acceptRequest = async (requestId, recipientUid) => {
   try {
     const requestDocRef = doc(database, 'users', recipientUid, 'requests', requestId);
-
     const requestSnapshot = await getDoc(requestDocRef);
+
     if (requestSnapshot.exists()) {
       const requestData = requestSnapshot.data();
 

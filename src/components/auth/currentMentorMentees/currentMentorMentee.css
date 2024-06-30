@@ -1,26 +1,85 @@
+
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  padding: 0 20px; /* Add padding for better alignment */
+}
+
+.profile-box {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%; /* Adjust width as needed */
+  max-width: 600px; /* Adjust max-width as needed */
+}
+
+.profile-box:hover {
+  background-color: #f0f0f0;
+}
+
+.section {
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* Slightly darker color for border bottom */
+  text-align: left;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px; /* Add margin between sections */
+}
+
+.Feature-Description {
+  width: 100%;
+  border-radius: 8px; /* Rounded corners */
+  padding: 10px; /* Padding around the content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+  text-align: left;
+  margin-bottom: 20px; /* Add margin at the bottom */
+}
+
+.Nav-button {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #000;
+  cursor: pointer;
+  border: 3px solid;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.reject-button {
+  background-color: #FF6347; /* Red color for reject button */
+  color: #FFF; /* White text */
+  border-color: #FF6347; /* Red border */
+  margin-left: 10px; /* Add margin between accept and reject buttons */
+}
+
+.Nav-button:active {
+  box-shadow: 0px 0px 0px 0px;
+  top: 5px;
+  left: 5px;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.829); /* Transparent line between sections */
+  margin: 20px 0; /* Margin for spacing */
+}
+
+@media (min-width: 768px) {
+  .Nav-button {
+    padding: 0.25em 0.75em;
   }
-  
-  .profile-box {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 8px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 80%; /* Adjust width as needed */
-    max-width: 600px; /* Adjust max-width as needed */
-  }
-  
-  .profile-box:hover {
-    background-color: #f0f0f0;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
+}
