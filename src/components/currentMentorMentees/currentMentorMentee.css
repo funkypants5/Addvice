@@ -26,6 +26,7 @@
   width: 100%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* Slightly darker color for border bottom */
   text-align: left;
+  color: #000;
 }
 
 ul {
@@ -41,6 +42,7 @@ ul {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
   text-align: left;
   margin-bottom: 20px; /* Add margin at the bottom */
+  color: #000;
 }
 
 .Nav-button {
@@ -53,7 +55,12 @@ ul {
   cursor: pointer;
   border: 3px solid;
   padding: 0.25em 0.5em;
-  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+  box-shadow:
+    1px 1px 0px 0px,
+    2px 2px 0px 0px,
+    3px 3px 0px 0px,
+    4px 4px 0px 0px,
+    5px 5px 0px 0px;
   position: relative;
   user-select: none;
   -webkit-user-select: none;
@@ -61,9 +68,9 @@ ul {
 }
 
 .reject-button {
-  background-color: #FF6347; /* Red color for reject button */
-  color: #FFF; /* White text */
-  border-color: #FF6347; /* Red border */
+  background-color: #ff6347; /* Red color for reject button */
+  color: #fff; /* White text */
+  border-color: #ff6347; /* Red border */
   margin-left: 10px; /* Add margin between accept and reject buttons */
 }
 
@@ -83,4 +90,8 @@ ul {
   .Nav-button {
     padding: 0.25em 0.75em;
   }
+}
+
+title {
+  font-size: 2em;
 }
