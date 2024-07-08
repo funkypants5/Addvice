@@ -10,7 +10,7 @@ import { AuthProvider } from "./context/authContext";
 import { useRoutes } from "react-router-dom";
 
 import { BrowserRouter} from "react-router-dom";
-import Mentormentee from "./components/auth/currentMentorMentees";
+import Mentormentee from "./components/currentMentorMentees";
 import MessagingPage from "./components/chats/messagingpage";
 
 function App() {
