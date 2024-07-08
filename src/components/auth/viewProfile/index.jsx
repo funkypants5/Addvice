@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { database } from '../../../lib/firebase';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { database } from "../../../lib/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { getAuth } from 'firebase/auth';
-import './viewProfile.css';
-import sendRequest from '../../../lib/sendRequest';
-import Navbar from '../../navbar/navbar';
+import { getAuth } from "firebase/auth";
+import "./viewProfile.css";
+import sendRequest from "../../../lib/sendRequest";
+import Navbar from "../../navbar/navbar";
 
 const ViewProfile = () => {
   const { name } = useParams();
@@ -31,13 +31,13 @@ const ViewProfile = () => {
   useEffect(() => {
     const fetchPerson = async () => {
       if (!name) return;
-      const q = query(collection(database, 'users'), where('name', '==', name));
+      const q = query(collection(database, "users"), where("name", "==", name));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         const docData = querySnapshot.docs[0].data();
         const personData = {
           ...docData,
-          uid: querySnapshot.docs[0].id // Access the document ID as UID
+          uid: querySnapshot.docs[0].id, // Access the document ID as UID
         };
         setPerson(personData);
         setUid(querySnapshot.docs[0].id); // Set UID state
@@ -54,10 +54,10 @@ const ViewProfile = () => {
       console.error("Person or current user data is missing");
       return;
     }
-  
+
     try {
-      console.log('Sending request to:', person.name);
-      console.log('Person UID:', person.uid); // Ensure uid is correctly accessed
+      console.log("Sending request to:", person.name);
+      console.log("Person UID:", person.uid); // Ensure uid is correctly accessed
       const requestId = await sendRequest(person.uid, "Request details here"); // Pass uid to sendRequest function
       console.log("Request sent successfully with ID:", requestId);
       alert("Request sent successfully!");
@@ -71,33 +71,13 @@ const ViewProfile = () => {
 
   return (
     <div className="profile-container">
-      <div className="">
-        <button
-          className=""
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        >
-          Features
-        </button>
-        {isDropdownOpen && (
-          <div className="">
-            <a href="/discovery" className="">
-              Discover
-            </a>
-            <a href="/message" className="">
-              Message
-            </a>
-            <a href="/currentMentorMentees" className="">
-              Current Mentors/Mentees
-            </a>
-            <a href="/profile" className="">
-              Profile
-            </a>
-          </div>
-        )}
-      </div>
-      <img src={person.profilePicture} alt={`${person.name}'s profile`} className="profile-picture" />
+      <Navbar />
+      <img
+        src={person.profilePicture}
+        alt={`${person.name}'s profile`}
+        className="profile-picture"
+      />
       <h2>{person.name}</h2>
-      <p>UID: {person.uid}</p>
       <p>Age: {person.age}</p>
       <p>Occupation: {person.occupation}</p>
       <p>Industry: {person.industry}</p>
@@ -105,10 +85,11 @@ const ViewProfile = () => {
       <p>Gender: {person.gender}</p>
       <p>Interests: {person.interests}</p>
       <p>About Me: {person.AboutMe}</p>
-      <button onClick={handleAppeal} className="appeal-button">Appeal for Mentor/Mentee</button>
+      <button onClick={handleAppeal} className="appeal-button">
+        Apply for Mentor/Mentee
+      </button>
     </div>
   );
 };
 
 export default ViewProfile;
-

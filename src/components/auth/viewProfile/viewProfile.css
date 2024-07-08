@@ -1,14 +1,43 @@
 .profile-box {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    
-    /* Flexbox Centering */
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-  }
-  
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  /* Flexbox Centering */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.profile-container p {
+  color: black;
+}
+
+.profile-container h2 {
+  color: black;
+}
+
+.profile-container .appeal-button {
+  display: inline-block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #f0f0f0; /* Adjust the background color as needed */
+  color: black; /* Keep the button text white */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow:
+    1px 1px 0px 0px,
+    2px 2px 0px 0px,
+    3px 3px 0px 0px,
+    4px 4px 0px 0px,
+    5px 5px 0px 0px;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.profile-container .appeal-button:hover {
+  background-color: #45a049; /* Adjust the hover background color as needed */
+}
