@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import "./navbar.css"
+import React, { useState } from "react";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
