@@ -4,14 +4,17 @@ import { collection, onSnapshot } from "firebase/firestore";
 import "./Discovery.css";
 import Navbar from "../navbar/navbar";
 import { Link } from "react-router-dom";
-import { Form, InputGroup, Dropdown, DropdownButton } from "react-bootstrap";
+import { DropdownButton, Form, InputGroup } from "react-bootstrap";
+import FilterRole from "./FilterRole";
+import FilterIndustry from "./FilterIndustry";
 
 const Discovery = () => {
   const [people, setPeople] = useState([]);
   const [filteredPeople, setFilteredPeople] = useState([]);
-  const [showIndustry, setShowIndustry] = useState(true);
   const [search, setSearch] = useState("");
-  const [selectedRole, setSelectedRole] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedRoleFilters, setSelectedRoleFilters] = useState([]);
+  const [selectedIndustryFilters, setSelectedIndustryFilters] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -30,18 +33,45 @@ const Discovery = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = people.filter((person) => {
-      const industryMatch = showIndustry
-        ? true
-        : person.industry === "Your Industry";
-      const roleMatch = selectedRole ? person.role === selectedRole : true;
-      return industryMatch && roleMatch;
-    });
-    setFilteredPeople(filtered);
-  }, [people, showIndustry, selectedRole]);
+    // Apply filters whenever selected filters change
+    applyFilters();
+  }, [selectedRoleFilters, selectedIndustryFilters]);
 
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role);
+  const applyFilters = () => {
+    let filtered = people.filter((person) => {
+      const roleMatch =
+        selectedRoleFilters.length === 0 ||
+        selectedRoleFilters.includes(person.role.toLowerCase());
+
+      const industryMatch =
+        selectedIndustryFilters.length === 0 ||
+        selectedIndustryFilters.includes(person.industry.toLowerCase());
+
+      return roleMatch && industryMatch;
+    });
+
+    // Apply search filter
+    filtered = applySearchFilter(filtered);
+
+    setFilteredPeople(filtered);
+  };
+
+  const applySearchFilter = (filteredPeople) => {
+    return filteredPeople.filter((person) =>
+      person.name.toLowerCase().includes(search.toLowerCase())
+    );
+  };
+
+  const handleRoleFilter = (selectedFilters) => {
+    setSelectedRoleFilters(
+      selectedFilters.map((filter) => filter.toLowerCase())
+    );
+  };
+
+  const handleIndustryFilter = (selectedFilters) => {
+    setSelectedIndustryFilters(
+      selectedFilters.map((filter) => filter.toLowerCase())
+    );
   };
 
   return (
@@ -57,21 +87,24 @@ const Discovery = () => {
         </div>
         <div className="toggle-buttons">
           <button
-            className={`Nav-button ${
-              showIndustry ? "disabled-button" : "primary-button-hover"
-            }`}
-            onClick={() => setShowIndustry(!showIndustry)}
+            className="Nav-button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             Industry
           </button>
-          <DropdownButton
-            className="Nav-button primary-button-hover"
-            title={selectedRole || "Role"}
-            onSelect={handleRoleSelect}
+          {isDropdownOpen && (
+            <FilterIndustry items={people} onFilter={handleIndustryFilter} />
+          )}
+
+          <button
+            className="Nav-button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            <Dropdown.Item eventKey="Mentor">Mentor</Dropdown.Item>
-            <Dropdown.Item eventKey="Mentee">Mentee</Dropdown.Item>
-          </DropdownButton>
+            Role
+          </button>
+          {isDropdownOpen && (
+            <FilterRole items={people} onFilter={handleRoleFilter} />
+          )}
 
           <Form>
             <InputGroup>
@@ -91,22 +124,17 @@ const Discovery = () => {
                 search.toLowerCase() === ""
                   ? true
                   : person.name.toLowerCase().includes(search.toLowerCase());
-              const roleMatch =
-                selectedRole === ""
-                  ? true
-                  : person.role.toLowerCase() === selectedRole.toLowerCase();
-              return nameMatch && roleMatch;
+              return nameMatch;
             })
-
             .map((person) => (
               <Link
-                to={`/viewProfile/${person.name}`}
+                to={`/viewProfile/${person.name}`} // Ensure the backticks are used for string interpolation
                 key={person.id}
                 className="profile-box"
               >
                 <img
                   src={person.profilePicture}
-                  alt={`${person.name}'s profile`}
+                  alt={`${person.name}'s profile`} // Ensure backticks are used here too
                   className="profile-picture"
                 />
                 <h3>{person.name}</h3>
