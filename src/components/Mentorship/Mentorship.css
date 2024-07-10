@@ -1,0 +1,19 @@
+.profile-box {
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  /* Flexbox Centering */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.profile-container p {
+  color: black;
+}
+
+.profile-container h2 {
+  color: black;
+}

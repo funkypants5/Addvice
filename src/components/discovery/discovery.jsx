@@ -12,7 +12,8 @@ const Discovery = () => {
   const [people, setPeople] = useState([]);
   const [filteredPeople, setFilteredPeople] = useState([]);
   const [search, setSearch] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
+  const [isIndustryDropdownOpen, setIsIndustryDropdownOpen] = useState(false);
   const [selectedRoleFilters, setSelectedRoleFilters] = useState([]);
   const [selectedIndustryFilters, setSelectedIndustryFilters] = useState([]);
 
@@ -88,22 +89,25 @@ const Discovery = () => {
         <div className="toggle-buttons">
           <button
             className="Nav-button"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onClick={() => setIsIndustryDropdownOpen(!isIndustryDropdownOpen)}
           >
             Industry
           </button>
-          {isDropdownOpen && (
-            <FilterIndustry items={people} onFilter={handleIndustryFilter} />
+          {isIndustryDropdownOpen && (
+            <div className="dropdown-container">
+              <FilterIndustry items={people} onFilter={handleIndustryFilter} />
+            </div>
           )}
-
           <button
             className="Nav-button"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
           >
             Role
           </button>
-          {isDropdownOpen && (
-            <FilterRole items={people} onFilter={handleRoleFilter} />
+          {isRoleDropdownOpen && (
+            <div className="dropdown-container">
+              <FilterRole items={people} onFilter={handleRoleFilter} />
+            </div>
           )}
 
           <Form>
@@ -128,7 +132,7 @@ const Discovery = () => {
             })
             .map((person) => (
               <Link
-                to={`/viewProfile/${person.name}`} // Ensure the backticks are used for string interpolation
+                to={`/viewProfile/${person.id}`} // Pass uid instead of name
                 key={person.id}
                 className="profile-box"
               >

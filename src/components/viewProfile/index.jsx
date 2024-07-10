@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { database } from "../../../lib/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { database } from "../../lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import "./viewProfile.css";
-import sendRequest from "../../../lib/sendRequest";
-import Navbar from "../../navbar/navbar";
+import sendRequest from "../../lib/sendRequest";
+import Navbar from "../navbar/navbar";
 
 const ViewProfile = () => {
-  const { name } = useParams();
-  const [person, setPerson] = useState();
+  const { uid } = useParams(); // Use uid instead of name
+  const [person, setPerson] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [uid, setUid] = useState(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -30,24 +28,18 @@ const ViewProfile = () => {
 
   useEffect(() => {
     const fetchPerson = async () => {
-      if (!name) return;
-      const q = query(collection(database, "users"), where("name", "==", name));
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        const docData = querySnapshot.docs[0].data();
-        const personData = {
-          ...docData,
-          uid: querySnapshot.docs[0].id, // Access the document ID as UID
-        };
-        setPerson(personData);
-        setUid(querySnapshot.docs[0].id); // Set UID state
+      if (!uid) return;
+      const userDoc = doc(database, "users", uid); // Use uid directly
+      const userSnapshot = await getDoc(userDoc);
+      if (userSnapshot.exists()) {
+        setPerson(userSnapshot.data());
       } else {
-        console.log(`No user found with name ${name}`);
+        console.log(`No user found with UID ${uid}`);
       }
     };
 
     fetchPerson();
-  }, [name]);
+  }, [uid]);
 
   const handleAppeal = async () => {
     if (!person || !currentUser) {
@@ -57,8 +49,8 @@ const ViewProfile = () => {
 
     try {
       console.log("Sending request to:", person.name);
-      console.log("Person UID:", person.uid); // Ensure uid is correctly accessed
-      const requestId = await sendRequest(person.uid, "Request details here"); // Pass uid to sendRequest function
+      console.log("Person UID:", uid); // Ensure uid is correctly accessed
+      const requestId = await sendRequest(uid, "Request details here"); // Pass uid to sendRequest function
       console.log("Request sent successfully with ID:", requestId);
       alert("Request sent successfully!");
     } catch (error) {

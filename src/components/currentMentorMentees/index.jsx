@@ -198,8 +198,60 @@ const CurrentMentorMentee = () => {
     }
   };
 
-  const handleProfileClick = (name) => {
-    navigate(`/viewProfile/${name}`);
+  const deleteMentor = async (mentorId) => {
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const mentorRef = doc(
+          database,
+          "users",
+          currentUser.uid,
+          "mentors",
+          mentorId
+        );
+        await deleteDoc(mentorRef);
+        console.log("Mentor deleted successfully");
+        setMentors((prevMentors) =>
+          prevMentors.filter((mentor) => mentor.id !== mentorId)
+        );
+      } else {
+        console.error("User not authenticated");
+      }
+    } catch (error) {
+      console.error("Error deleting mentor:", error);
+    }
+  };
+
+  const deleteMentee = async (menteeId) => {
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const menteeRef = doc(
+          database,
+          "users",
+          currentUser.uid,
+          "mentees",
+          menteeId
+        );
+        await deleteDoc(menteeRef);
+        console.log("Mentee deleted successfully");
+        setMentees((prevMentees) =>
+          prevMentees.filter((mentee) => mentee.id !== menteeId)
+        );
+      } else {
+        console.error("User not authenticated");
+      }
+    } catch (error) {
+      console.error("Error deleting mentee:", error);
+    }
+  };
+
+  const handleProfileClick = (uid) => {
+    navigate(`/Mentorship/${uid}`);
   };
 
   return (
@@ -238,18 +290,22 @@ const CurrentMentorMentee = () => {
         </div>
         <div className="section">
           <h2>Mentors</h2>
-          <ul>
+          <ul className="users">
             {mentors.map((mentor) => (
-              <li
-                key={mentor.id}
-                className="profile-box"
-                onClick={() => handleProfileClick(mentor.name)}
-              >
-                <h3>{mentor.name}</h3>
-                <p>Age: {mentor.age}</p>
-                <p>Occupation: {mentor.occupation}</p>
-                <p>Industry: {mentor.industry}</p>
-                <p>Gender: {mentor.gender}</p>
+              <li key={mentor.id} className="profile-box">
+                <button
+                  className="delete-button"
+                  onClick={() => deleteMentor(mentor.id)}
+                >
+                  X
+                </button>
+                <div onClick={() => handleProfileClick(mentor.id)}>
+                  <h3>{mentor.name}</h3>
+                  <p>Age: {mentor.age}</p>
+                  <p>Occupation: {mentor.occupation}</p>
+                  <p>Industry: {mentor.industry}</p>
+                  <p>Gender: {mentor.gender}</p>
+                </div>
               </li>
             ))}
           </ul>
@@ -258,16 +314,20 @@ const CurrentMentorMentee = () => {
           <h2>Mentees</h2>
           <ul className="users">
             {mentees.map((mentee) => (
-              <li
-                key={mentee.id}
-                className="profile-box"
-                onClick={() => handleProfileClick(mentee.name)}
-              >
-                <h3>{mentee.name}</h3>
-                <p>Age: {mentee.age}</p>
-                <p>Occupation: {mentee.occupation}</p>
-                <p>Industry: {mentee.industry}</p>
-                <p>Gender: {mentee.gender}</p>
+              <li key={mentee.id} className="profile-box">
+                <button
+                  className="delete-button"
+                  onClick={() => deleteMentee(mentee.id)}
+                >
+                  X
+                </button>
+                <div onClick={() => handleProfileClick(mentee.id)}>
+                  <h3>{mentee.name}</h3>
+                  <p>Age: {mentee.age}</p>
+                  <p>Occupation: {mentee.occupation}</p>
+                  <p>Industry: {mentee.industry}</p>
+                  <p>Gender: {mentee.gender}</p>
+                </div>
               </li>
             ))}
           </ul>
