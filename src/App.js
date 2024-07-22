@@ -13,6 +13,7 @@ import { BrowserRouter } from "react-router-dom";
 import Mentormentee from "./components/currentMentorMentees";
 import MessagingPage from "./components/chats/messagingpage";
 import Mentorship from "./components/Mentorship/Mentorship";
+import Calendar from "./components/Calendar/Calendar";
 
 function App() {
   const routesArray = [
@@ -51,6 +52,10 @@ function App() {
     {
       path: "/Mentorship/:uid",
       element: <Mentorship />,
+    },
+    {
+      path: "/Calendar",
+      element: <Calendar />,
     },
   ];
   let routesElement = useRoutes(routesArray);

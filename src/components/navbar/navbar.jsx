@@ -26,6 +26,9 @@ const Navbar = () => {
             <a href="/profile" className="dropdown-item">
               Profile
             </a>
+            <a href="/Calendar" className="dropdown-item">
+              Calendar
+            </a>
           </div>
         )}
       </div>

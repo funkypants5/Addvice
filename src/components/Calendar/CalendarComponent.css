@@ -1,0 +1,153 @@
+/* Calendar container styling */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Styling for calendar */
+.calendar {
+  max-width: 90%; /* Adjust calendar width */
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Form container styling */
+.form-container {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #333; /* Dark background for better contrast */
+  color: black; /* Text color for form */
+}
+
+/* Form header styling */
+.form-container h2 {
+  margin: 0 0 10px;
+  color: black; /* Heading text color */
+}
+
+/* Form styling */
+.form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form label styling */
+.form-container label {
+  margin: 10px 0;
+  color: black; /* Label text color */
+}
+
+/* Form input styling */
+.form-container input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Form button styling */
+.form-container button {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: black;
+  cursor: pointer;
+  font-size: 16px; /* Adjust font size */
+}
+
+/* Button hover effects */
+.form-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Secondary button styling */
+.form-container button[type="button"] {
+  background-color: #6c757d;
+}
+
+/* Secondary button hover effects */
+.form-container button[type="button"]:hover {
+  background-color: #5a6268;
+}
+
+/* Custom styling for react-calendar */
+.react-calendar {
+  font-family: Arial, sans-serif;
+  background-color: #fff; /* Calendar background */
+  border: 1px solid #ddd; /* Calendar border */
+  border-radius: 5px;
+}
+
+.react-calendar__navigation {
+  margin-bottom: 10px;
+}
+
+.react-calendar__month-view__days__day {
+  color: #000; /* Day numbers color */
+}
+
+.react-calendar__month-view__weekdays {
+  color: #000; /* Weekday names color */
+}
+
+/* Ensure day names have good contrast */
+.react-calendar__month-view__weekdays__weekday {
+  color: #000; /* Color of the weekday headers */
+}
+
+/* Ensure day numbers have good contrast */
+.react-calendar__month-view__days__day {
+  color: #000; /* Day numbers color */
+}
+
+/* Event button styling */
+.add-event-button {
+  background-color: #007bff;
+  color: black;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px; /* Adjust font size */
+}
+
+.add-event-button:hover {
+  background-color: #0056b3;
+}
+
+/* Delete button styling */
+.delete-button {
+  background-color: #dc3545; /* Red background */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 14px; /* Adjust font size */
+}
+
+/* Delete button hover effects */
+.delete-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+/* Style for event list items */
+.events-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.events-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  width: 100%; /* Make sure each list item is full width */
+  max-width: 600px; /* Limit the width of the event list items */
+}
