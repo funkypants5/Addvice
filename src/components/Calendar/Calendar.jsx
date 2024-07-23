@@ -8,8 +8,10 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../updateProfile/firebaseConfig";
+import { getAuth } from "firebase/auth";
+import moment from "moment-timezone"; // Import moment-timezone
 import "react-calendar/dist/Calendar.css";
-import "./CalendarComponent.css"; // Add this for custom styling
+import "./CalendarComponent.css";
 import Navbar from "../navbar/navbar";
 
 const CalendarComponent = () => {
@@ -22,12 +24,23 @@ const CalendarComponent = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "events"));
-        const eventsList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setEvents(eventsList);
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+
+        if (currentUser) {
+          const eventsCollection = collection(
+            db,
+            "users",
+            currentUser.uid,
+            "events"
+          );
+          const querySnapshot = await getDocs(eventsCollection);
+          const eventsList = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setEvents(eventsList);
+        }
       } catch (error) {
         console.error("Error fetching events: ", error);
       }
@@ -38,7 +51,7 @@ const CalendarComponent = () => {
 
   useEffect(() => {
     const eventsOnSelectedDate = events.filter((event) => {
-      const eventDate = new Date(event.date);
+      const eventDate = moment.tz(event.date, "Asia/Singapore").toDate();
       return eventDate.toDateString() === selectedDate.toDateString();
     });
 
@@ -62,19 +75,30 @@ const CalendarComponent = () => {
 
   const handleAddEvent = async () => {
     try {
-      await addDoc(collection(db, "events"), {
-        name: newEvent.name,
-        date: selectedDate.toISOString().split("T")[0],
-        time: newEvent.time,
-      });
-      setShowAddEvent(false);
-      setNewEvent({ name: "", time: "" });
-      const querySnapshot = await getDocs(collection(db, "events"));
-      const eventsList = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setEvents(eventsList);
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const eventsCollection = collection(
+          db,
+          "users",
+          currentUser.uid,
+          "events"
+        );
+        await addDoc(eventsCollection, {
+          name: newEvent.name,
+          date: moment.tz(selectedDate, "Asia/Singapore").format("YYYY-MM-DD"),
+          time: newEvent.time,
+        });
+        setShowAddEvent(false);
+        setNewEvent({ name: "", time: "" });
+        const querySnapshot = await getDocs(eventsCollection);
+        const eventsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setEvents(eventsList);
+      }
     } catch (error) {
       console.error("Error adding event: ", error);
     }
@@ -82,9 +106,15 @@ const CalendarComponent = () => {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      await deleteDoc(doc(db, "events", eventId));
-      const updatedEvents = events.filter((event) => event.id !== eventId);
-      setEvents(updatedEvents);
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const eventRef = doc(db, "users", currentUser.uid, "events", eventId);
+        await deleteDoc(eventRef);
+        const updatedEvents = events.filter((event) => event.id !== eventId);
+        setEvents(updatedEvents);
+      }
     } catch (error) {
       console.error("Error deleting event: ", error);
     }
@@ -99,7 +129,6 @@ const CalendarComponent = () => {
 
   return (
     <div>
-      {" "}
       <Navbar />
       <div className="calendar-container">
         <div className="calendar-controls">

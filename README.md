@@ -12,5 +12,6 @@ npm install react-router-dom
 npm install react-bootstrap bootstrap
 npm install react-datepicker firebase
 npm install firebase react-calendar
+npm install moment-timezone
 
 npm start
