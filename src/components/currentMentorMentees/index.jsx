@@ -30,10 +30,22 @@ const CurrentMentorMentee = () => {
           collection(doc(database, "users", currentUser.uid), "requests")
         );
         const querySnapshot = await getDocs(q);
-        const requestsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const requestsData = await Promise.all(
+          querySnapshot.docs.map(async (docSnapshot) => {
+            const requestData = docSnapshot.data();
+            const fromUserDoc = await getDoc(
+              doc(database, "users", requestData.from)
+            );
+            const fromUserData = fromUserDoc.exists()
+              ? fromUserDoc.data()
+              : { name: "Unknown" };
+            return {
+              id: docSnapshot.id,
+              ...requestData,
+              fromName: fromUserData.name,
+            };
+          })
+        );
         setRequests(requestsData);
       } else {
         console.error("User not authenticated");
@@ -68,16 +80,16 @@ const CurrentMentorMentee = () => {
         };
 
         const mentorsData = await Promise.all(
-          mentorsSnapshot.docs.map(async (doc) => ({
-            id: doc.id,
-            ...(await fetchProfile(doc.id)),
+          mentorsSnapshot.docs.map(async (docSnapshot) => ({
+            id: docSnapshot.id,
+            ...(await fetchProfile(docSnapshot.id)),
           }))
         );
 
         const menteesData = await Promise.all(
-          menteesSnapshot.docs.map(async (doc) => ({
-            id: doc.id,
-            ...(await fetchProfile(doc.id)),
+          menteesSnapshot.docs.map(async (docSnapshot) => ({
+            id: docSnapshot.id,
+            ...(await fetchProfile(docSnapshot.id)),
           }))
         );
 
@@ -270,7 +282,7 @@ const CurrentMentorMentee = () => {
           <ul>
             {requests.map((request) => (
               <li key={request.id}>
-                <p>From: {request.from}</p>
+                <p>From: {request.fromName}</p>
                 <p>Status: {request.status}</p>
                 <button
                   className="Nav-button"
