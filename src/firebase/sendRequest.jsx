@@ -9,7 +9,7 @@ const sendRequest = async (recipientUid, requesterDetails) => {
     console.log("Current User:", currentUser);
 
     if (currentUser) {
-      // Fetch the current user's role
+      // Fetch the current user's role and name
       const userDocRef = doc(database, "users", currentUser.uid);
       const userDocSnapshot = await getDoc(userDocRef);
       if (!userDocSnapshot.exists()) {
@@ -19,6 +19,7 @@ const sendRequest = async (recipientUid, requesterDetails) => {
 
       const userData = userDocSnapshot.data();
       const userRole = userData.role; // Assuming the role is stored as 'role' in user document
+      const userName = userData.name; // Assuming the name is stored as 'name' in user document
 
       const requestsCollection = collection(
         doc(database, "users", recipientUid),
@@ -27,6 +28,7 @@ const sendRequest = async (recipientUid, requesterDetails) => {
 
       const requestDoc = {
         from: currentUser.uid,
+        fromName: userName, // Include the sender's name
         to: recipientUid,
         details: requesterDetails,
         role: userRole, // Include the sender's role
