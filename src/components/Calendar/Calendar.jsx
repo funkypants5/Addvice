@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../updateProfile/firebaseConfig";
 import { getAuth } from "firebase/auth";
-import moment from "moment-timezone"; // Import moment-timezone
+import moment from "moment-timezone";
 import "react-calendar/dist/Calendar.css";
 import "./CalendarComponent.css";
 import Navbar from "../navbar/navbar";
@@ -131,6 +131,24 @@ const CalendarComponent = () => {
     <div>
       <Navbar />
       <div className="calendar-container">
+        <div className="calendar-content">
+          <div className="calendar">
+            <Calendar onChange={onDateChange} value={selectedDate} />
+          </div>
+          <div className="events-list">
+            <h2>Events on {selectedDate.toDateString()}</h2>
+            <ul>
+              {eventsForSelectedDate.map((event) => (
+                <li key={event.id}>
+                  {event.name} - {formatTime(event.time)}
+                  <button onClick={() => handleDeleteEvent(event.id)}>
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
         <div className="calendar-controls">
           <button
             className="add-event-button"
@@ -140,7 +158,7 @@ const CalendarComponent = () => {
           </button>
         </div>
         {showAddEvent && (
-          <div className="add-event-form">
+          <div className={`add-event-form ${showAddEvent ? "expanded" : ""}`}>
             <h2>Add Event</h2>
             <label>
               Event Name:
@@ -165,24 +183,6 @@ const CalendarComponent = () => {
             <button onClick={handleAddEvent}>Save Event</button>
           </div>
         )}
-        <div className="calendar-content">
-          <div className="calendar">
-            <Calendar onChange={onDateChange} value={selectedDate} />
-          </div>
-          <div className="events-list">
-            <h2>Events on {selectedDate.toDateString()}</h2>
-            <ul>
-              {eventsForSelectedDate.map((event) => (
-                <li key={event.id}>
-                  {event.name} - {formatTime(event.time)}
-                  <button onClick={() => handleDeleteEvent(event.id)}>
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   );
