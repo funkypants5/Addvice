@@ -97,8 +97,9 @@ const Profile = () => {
   };
 
   return (
+    <div> 
+      <Navbar/> 
     <div className="profile-container">
-      <Navbar />
       <div className="content-container">
         <div className="feature-description">
           <h1 className="section-title">Update Your Profile</h1>
@@ -227,6 +228,7 @@ const Profile = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

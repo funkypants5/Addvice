@@ -2,69 +2,72 @@
 .profile-container {
     display: flex;
     flex-direction: column;
-  }
-  
-  .content-container {
+    align-items: center; /* Center align content */
+}
+
+.content-container {
     width: 100%;
     padding: 20px;
     text-align: left;
-  }
-  
-  .main-title {
+}
+
+.main-title {
     font-size: 32px;
     margin-bottom: 10px;
     color: black;
-  }
-  .section-title {
+}
+
+.section-title {
     font-size: 24px;
     margin-bottom: 5px;
     color: black; 
-  }
-  
-  .feature-description {
+}
+
+.feature-description {
     width: 100%;
     border-radius: 8px; 
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     text-align: left;
-  }
-  
-  .section-text {
+}
+
+.section-text {
     font-size: 16px;
     color: #666;
+}
+
+.photo-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* Creates circular shape */
+    object-fit: cover; /* Maintain aspect ratio */
+    border: 4px solid lightblue; /* Light blue border */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+    overflow: hidden;
+    position: relative;
   }
-  
-  .photo-container {
-    margin-bottom: 20px;
-  }
-  
-  .photo-container img {
-    max-width: 200px;
-    max-height: 200px;
-    border-radius: 8px;
-  }
-  
-  .details-section {
+
+.details-section {
     margin-top: 20px;
-  }
-  
-  .details-section label {
+}
+
+.details-section label {
     margin-bottom: 8px;
     color: black; 
-  }
-  
-  .details-section input,
-  .details-section select,
-  .details-section textarea {
+}
+
+.details-section input,
+.details-section select,
+.details-section textarea {
     width: 100%;
     margin-bottom: 12px;
     font-size: 16px;
     border-radius: 8px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-  }
-  
-  .update-button {
+}
+
+.update-button {
     background-color: #4CAF50;
     color: white;
     padding: 12px 20px;
@@ -73,10 +76,8 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
-  }
-  
-  .update-button:hover {
-    background-color: #45a049;
-  }
+}
 
-  
+.update-button:hover {
+    background-color: #45a049;
+}

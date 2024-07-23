@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import "./Filter.css"; // Import the CSS file
 
@@ -31,7 +32,7 @@ const FilterIndustry = ({ items, onFilter }) => {
   };
 
   return (
-    <div>
+    <div className="dropdown-content">
       <div className="buttons-container">
         {filters.map((category, idx) => (
           <button

@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { DropdownButton, Form, InputGroup } from "react-bootstrap";
 import FilterRole from "./FilterRole";
 import FilterIndustry from "./FilterIndustry";
+import avatar from "../../components/chats/chat-images/avatar.png";
+import "./searchbar.css";
 
 const Discovery = () => {
   const [people, setPeople] = useState([]);
@@ -75,6 +77,12 @@ const Discovery = () => {
     );
   };
 
+  const handleResetFilters = () => {
+    setSelectedRoleFilters([]);
+    setSelectedIndustryFilters([]);
+    setSearch("");
+  };
+
   return (
     <div>
       <Navbar />
@@ -119,6 +127,10 @@ const Discovery = () => {
               />
             </InputGroup>
           </Form>
+
+          <button className="Nav-button" onClick={handleResetFilters}>
+            Reset
+          </button>
         </div>
 
         <div className="profiles-container">
@@ -137,7 +149,7 @@ const Discovery = () => {
                 className="profile-box"
               >
                 <img
-                  src={person.profilePicture}
+                  src={person.avatar || avatar}
                   alt={`${person.name}'s profile`} // Ensure backticks are used here too
                   className="profile-picture"
                 />

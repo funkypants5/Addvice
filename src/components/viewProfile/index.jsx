@@ -6,6 +6,7 @@ import { getAuth } from "firebase/auth";
 import "./viewProfile.css";
 import sendRequest from "../../lib/sendRequest";
 import Navbar from "../navbar/navbar";
+import avatar from "../../components/chats/chat-images/avatar.png";
 
 const ViewProfile = () => {
   const { uid } = useParams(); // Use uid instead of name
@@ -62,24 +63,26 @@ const ViewProfile = () => {
   if (!person) return <div>Loading...</div>;
 
   return (
-    <div className="profile-container">
+    <div>
       <Navbar />
-      <img
-        src={person.profilePicture}
-        alt={`${person.name}'s profile`}
-        className="profile-picture"
-      />
-      <h2>{person.name}</h2>
-      <p>Age: {person.age}</p>
-      <p>Occupation: {person.occupation}</p>
-      <p>Industry: {person.industry}</p>
-      <p>Role: {person.role}</p>
-      <p>Gender: {person.gender}</p>
-      <p>Interests: {person.interests}</p>
-      <p>About Me: {person.AboutMe}</p>
-      <button onClick={handleAppeal} className="appeal-button">
-        Apply for Mentor/Mentee
-      </button>
+      <div className="profile-container">
+        <img
+          className="Profile-pic"
+          src={person.avatar || avatar}
+          alt={`${person.name}'s avatar`}
+        />
+        <h2>{person.name}</h2>
+        <p>Age: {person.age}</p>
+        <p>Occupation: {person.occupation}</p>
+        <p>Industry: {person.industry}</p>
+        <p>Role: {person.role}</p>
+        <p>Gender: {person.gender}</p>
+        <p>Interests: {person.interests}</p>
+        <p>About Me: {person.AboutMe}</p>
+        <button onClick={handleAppeal} className="appeal-button">
+          Apply for Mentor/Mentee
+        </button>
+      </div>
     </div>
   );
 };
