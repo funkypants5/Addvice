@@ -3,7 +3,7 @@ import "./Filter.css"; // Import the CSS file
 
 const FilterRole = ({ items, onFilter }) => {
   const [selectedFilters, setSelectedFilters] = useState([]);
-  let filters = ["mentee", "mentor"];
+  let filters = ["Mentee", "Mentor"];
 
   const handleFilterButtonClick = (selectedCategory) => {
     const newFilters = selectedFilters.includes(selectedCategory)
@@ -15,7 +15,7 @@ const FilterRole = ({ items, onFilter }) => {
   };
 
   return (
-    <div>
+    <div className="dropdown-content">
       <div className="buttons-container">
         {filters.map((category, idx) => (
           <button
