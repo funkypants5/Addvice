@@ -1,25 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { database } from "../../lib/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import "./Discovery.css";
 import Navbar from "../navbar/navbar";
 import { Link } from "react-router-dom";
-import { DropdownButton, Form, InputGroup } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 import FilterRole from "./FilterRole";
 import FilterIndustry from "./FilterIndustry";
 import avatar from "../../components/chats/chat-images/avatar.png";
 import "./searchbar.css";
+import { getAuth } from "firebase/auth";
+
+const ITEMS_PER_PAGE = 4;
 
 const Discovery = () => {
   const [people, setPeople] = useState([]);
   const [filteredPeople, setFilteredPeople] = useState([]);
+  const [displayedPeople, setDisplayedPeople] = useState([]);
   const [search, setSearch] = useState("");
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
   const [isIndustryDropdownOpen, setIsIndustryDropdownOpen] = useState(false);
   const [selectedRoleFilters, setSelectedRoleFilters] = useState([]);
   const [selectedIndustryFilters, setSelectedIndustryFilters] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
 
   useEffect(() => {
+    // Get the current user's ID
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      setCurrentUserId(user.uid);
+    }
+
     const unsubscribe = onSnapshot(
       collection(database, "users"),
       (snapshot) => {
@@ -28,7 +43,9 @@ const Discovery = () => {
           ...doc.data(),
         }));
         setPeople(peopleData);
-        setFilteredPeople(peopleData);
+        setFilteredPeople(
+          peopleData.filter((person) => person.id !== user.uid)
+        ); // Exclude current user immediately
       }
     );
 
@@ -38,7 +55,24 @@ const Discovery = () => {
   useEffect(() => {
     // Apply filters whenever selected filters change
     applyFilters();
-  }, [selectedRoleFilters, selectedIndustryFilters]);
+  }, [selectedRoleFilters, selectedIndustryFilters, currentUserId, search]);
+
+  useEffect(() => {
+    setPage(1);
+    const initialDisplayedPeople = filteredPeople.slice(0, ITEMS_PER_PAGE);
+    setDisplayedPeople(initialDisplayedPeople);
+    setHasMore(initialDisplayedPeople.length < filteredPeople.length);
+  }, [filteredPeople]);
+
+  useEffect(() => {
+    if (page === 1) return;
+    const newDisplayedPeople = filteredPeople.slice(0, page * ITEMS_PER_PAGE);
+    setDisplayedPeople(newDisplayedPeople);
+    setHasMore(newDisplayedPeople.length < filteredPeople.length);
+    console.log(
+      `Loaded page ${page}, total displayed: ${newDisplayedPeople.length}`
+    );
+  }, [page]);
 
   const applyFilters = () => {
     let filtered = people.filter((person) => {
@@ -82,6 +116,33 @@ const Discovery = () => {
     setSelectedIndustryFilters([]);
     setSearch("");
   };
+
+  const lastProfileElementRef = useRef();
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.1,
+    };
+
+    const callback = (entries) => {
+      if (entries[0].isIntersecting && hasMore) {
+        console.log("Last element intersecting, loading more...");
+        setPage((prevPage) => prevPage + 1);
+      }
+    };
+
+    if (lastProfileElementRef.current) {
+      observer.current = new IntersectionObserver(callback, options);
+      observer.current.observe(lastProfileElementRef.current);
+    }
+
+    return () => {
+      if (observer.current && lastProfileElementRef.current) {
+        observer.current.unobserve(lastProfileElementRef.current);
+      }
+    };
+  }, [displayedPeople, hasMore]);
 
   return (
     <div>
@@ -134,33 +195,50 @@ const Discovery = () => {
         </div>
 
         <div className="profiles-container">
-          {filteredPeople
-            .filter((person) => {
-              const nameMatch =
-                search.toLowerCase() === ""
-                  ? true
-                  : person.name.toLowerCase().includes(search.toLowerCase());
-              return nameMatch;
-            })
-            .map((person) => (
-              <Link
-                to={`/viewProfile/${person.id}`} // Pass uid instead of name
-                key={person.id}
-                className="profile-box"
-              >
-                <img
-                  src={person.avatar || avatar}
-                  alt={`${person.name}'s profile`} // Ensure backticks are used here too
-                  className="profile-picture"
-                />
-                <h3>{person.name}</h3>
-                <p>Age: {person.age}</p>
-                <p>Industry: {person.industry}</p>
-                <p>Gender: {person.gender}</p>
-                <p>Role: {person.role}</p>
-              </Link>
-            ))}
+          {displayedPeople.map((person, index) => {
+            if (index === displayedPeople.length - 1) {
+              return (
+                <Link
+                  ref={lastProfileElementRef}
+                  to={`/viewProfile/${person.id}`} // Pass uid instead of name
+                  key={person.id}
+                  className="profile-box"
+                >
+                  <img
+                    src={person.avatar || avatar}
+                    alt={`${person.name}'s profile`} // Ensure backticks are used here too
+                    className="profile-picture"
+                  />
+                  <h3>{person.name}</h3>
+                  <p>Age: {person.age}</p>
+                  <p>Industry: {person.industry}</p>
+                  <p>Gender: {person.gender}</p>
+                  <p>Role: {person.role}</p>
+                </Link>
+              );
+            } else {
+              return (
+                <Link
+                  to={`/viewProfile/${person.id}`} // Pass uid instead of name
+                  key={person.id}
+                  className="profile-box"
+                >
+                  <img
+                    src={person.avatar || avatar}
+                    alt={`${person.name}'s profile`} // Ensure backticks are used here too
+                    className="profile-picture"
+                  />
+                  <h3>{person.name}</h3>
+                  <p>Age: {person.age}</p>
+                  <p>Industry: {person.industry}</p>
+                  <p>Gender: {person.gender}</p>
+                  <p>Role: {person.role}</p>
+                </Link>
+              );
+            }
+          })}
         </div>
+        {!hasMore && <p className="end-message">Yay! You have seen it all.</p>}
       </div>
     </div>
   );

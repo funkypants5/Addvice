@@ -97,138 +97,136 @@ const Profile = () => {
   };
 
   return (
-    <div> 
-      <Navbar/> 
-    <div className="profile-container">
-      <div className="content-container">
-        <div className="feature-description">
-          <h1 className="section-title">Update Your Profile</h1>
-          <p className="section-text">
-            Keep your profile up to date to get the best experience.
-          </p>
-        </div>
+    <div>
+      <Navbar />
+      <div className="profile-container">
+        <div className="content-container">
+          <div className="feature-description">
+            <h1 className="section-title">Update Your Profile</h1>
+            <p className="section-text">
+              Keep your profile up to date to get the best experience.
+            </p>
+          </div>
 
-        <div className="onboarding">
-          <form onSubmit={handleSubmit}>
-            <section className="photo-section">
-              <div className="photo-container">
-                <label>
-                  {avatar.url ? (
-                    <img src={avatar.url} alt="avatar" />
-                  ) : (
-                    <div>Upload your profile picture here!</div>
-                  )}
-                  <input
-                    type="file"
-                    name="avatar"
-                    accept="image/*"
-                    onChange={handleChange}
-                  />
-                </label>
-              </div>
-            </section>
-            <section className="details-section">
-              <label htmlFor="name">Name</label>
-              <input
-                id="name"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Your Name"
-                required
-              />
-              <label className="multiple-input-container">Age</label>
-              <select
-                id="age"
-                name="age"
-                value={formData.age}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Age</option>
-                <option value="18-25">18-25</option>
-                <option value="25-30">25-30</option>
-                <option value="30-40">30-40</option>
-                <option value="40-50">40-50</option>
-                <option value="50-60">50-60</option>
-                <option value="60+">60+</option>
-              </select>
+          <div className="onboarding">
+            <form onSubmit={handleSubmit}>
+              <section className="photo-section">
+                <div className="photo-container">
+                  <label>
+                    {avatar.url ? (
+                      <img src={avatar.url} alt="avatar" />
+                    ) : (
+                      <div>Upload your profile picture here!</div>
+                    )}
+                    <input
+                      type="file"
+                      name="avatar"
+                      accept="image/*"
+                      onChange={handleChange}
+                    />
+                  </label>
+                </div>
+              </section>
+              <section className="details-section">
+                <label htmlFor="name">Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your Name"
+                  required
+                />
+                <label className="multiple-input-container">Age</label>
+                <select
+                  id="age"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Age</option>
+                  <option value="18-25">18-25</option>
+                  <option value="25-30">25-30</option>
+                  <option value="30-40">30-40</option>
+                  <option value="40-50">40-50</option>
+                  <option value="50-60">50-60</option>
+                  <option value="60+">60+</option>
+                </select>
 
-              <label className="multiple-input-container">Occupation</label>
-              <select
-                name="occupation"
-                value={formData.occupation}
-                onChange={handleChange}
-                className=""
-                required
-              >
-                <option value="">Select Occupation</option>
-                {roles.map((role) => (
-                  <option key={role} value={role}>
-                    {role}
-                  </option>
-                ))}
-              </select>
-              <label className="multiple-input-container">Industry</label>
-              <select
-                name="industry"
-                value={formData.industry}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Industry</option>
-                {industries.map((industry) => (
-                  <option key={industry} value={industry}>
-                    {industry}
-                  </option>
-                ))}
-              </select>
-              <label className="">Role</label>
-              <select
-                name="role"
-                placeholder="Selct Role"
-                value={formData.role}
-                onChange={handleChange}
-                disabled={isSubmitted}
-                required
-              >
-                <option value="mentor">Mentor</option>
-                <option value="mentee">Mentee</option>
-              </select>
+                <label className="multiple-input-container">Occupation</label>
+                <select
+                  name="occupation"
+                  value={formData.occupation}
+                  onChange={handleChange}
+                  className=""
+                  required
+                >
+                  <option value="">Select Occupation</option>
+                  {roles.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
+                <label className="multiple-input-container">Industry</label>
+                <select
+                  name="industry"
+                  value={formData.industry}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Industry</option>
+                  {industries.map((industry) => (
+                    <option key={industry} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
+                </select>
+                <label className="">Role</label>
+                <select
+                  name="role"
+                  placeholder="Selct Role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="mentor">Mentor</option>
+                  <option value="mentee">Mentee</option>
+                </select>
 
-              <label className="multiple-input-container">Gender</label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                disabled={isSubmitted}
-                placeholder="Selct Gender"
-                required
-              >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="Other">Prefer not to say</option>
-              </select>
+                <label className="multiple-input-container">Gender</label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  placeholder="Selct Gender"
+                  required
+                >
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="Other">Prefer not to say</option>
+                </select>
 
-              <label htmlFor="AboutMe">About Me</label>
-              <textarea
-                id="AboutMe"
-                name="AboutMe"
-                value={formData.AboutMe}
-                onChange={handleChange}
-                className=""
-                required
-                placeholder="Tell us about yourself..."
-              />
-              <button type="submit" className="update-button">
-                Update Profile
-              </button>
-            </section>
-          </form>
+                <label htmlFor="AboutMe">About Me</label>
+                <textarea
+                  id="AboutMe"
+                  name="AboutMe"
+                  value={formData.AboutMe}
+                  onChange={handleChange}
+                  className=""
+                  required
+                  placeholder="Tell us about yourself..."
+                />
+                <button type="submit" className="update-button">
+                  Update Profile
+                </button>
+              </section>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
