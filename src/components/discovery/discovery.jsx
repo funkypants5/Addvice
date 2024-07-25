@@ -84,7 +84,10 @@ const Discovery = () => {
         selectedIndustryFilters.length === 0 ||
         selectedIndustryFilters.includes(person.industry.toLowerCase());
 
-      return roleMatch && industryMatch;
+      // Exclude the current user's profile
+      const excludeCurrentUser = person.id !== currentUserId;
+
+      return roleMatch && industryMatch && excludeCurrentUser;
     });
 
     // Apply search filter
