@@ -9,6 +9,7 @@ npm install
 npm install -g firebase-tools  
 npm install firebase  
 npm install react-router-dom
+npm install react-firebase-hooks
 npm install react-bootstrap bootstrap
 npm install react-datepicker firebase
 npm install firebase react-calendar
