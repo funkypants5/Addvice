@@ -1,0 +1,309 @@
+/* chats.css */
+
+body {
+  color: white;
+  margin: 0; /* Remove default body margin */
+  font-family: "Readex Pro", sans-serif; /* Use specified font */
+}
+
+.messaging-page-container {
+  background-color: rgba(17, 25, 40, 0.75);
+  backdrop-filter: blur(19px) saturate(180%);
+  border-radius: 12px;
+  height: 90vh; /* Adjust height as needed */
+  display: flex;
+  position: absolute;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* .messagedetail */
+.list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-right: 10px;
+  border-right: 1px solid #dddddd35;
+  height: 100%;
+}
+
+/* .container-details */
+.contact-details-container {
+  flex: 1;
+}
+
+.detail {
+  flex: 1;
+}
+
+.detail .user {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #dddddd35;
+}
+
+.detail .user img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.detail .user h2 {
+  margin: 5px 0 0 0;
+}
+
+.detail .user p {
+  margin: 2px 0 0 0;
+}
+
+.detail .info {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail .info .Option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0px;
+}
+
+.detail .info .Option .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0px;
+}
+
+.detail .info .Option .title img {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(17, 25, 40, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.detail .info .Option .title span {
+  font-size: 13px;
+}
+
+.detail .info .Option .photos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.detail .info .Option .photos .photoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail .info .Option .photos .photoItem .photoDetail {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.detail .info .Option .photos .photoItem .photoDetail img {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.detail .info .Option .photos .photoItem .photoDetail span {
+  font-size: 14px;
+  color: lightgray;
+  font-weight: 300;
+}
+
+.detail .info .Option .photos .photoItem .icons {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(17, 25, 40, 0.3);
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.detail button {
+  padding: 10px 20px;
+  background-color: rgba(230, 74, 105, 0.553);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.detail button:hover {
+  background-color: rgba(230, 74, 105, 0.796);
+}
+
+/* .message */
+.message-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #dddddd35;
+}
+
+.message-container .top {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #dddddd35;
+}
+
+.message-container .top .user {
+  display: flex;
+  align-items: center;
+}
+
+.message-container .top .user img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-container .top .user .texts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.message-container .top .user span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.message-container .top .user p {
+  font-size: 14px;
+  font-weight: 300;
+  color: #a5a5a5;
+}
+
+.message-container .top .icons {
+  display: flex;
+  gap: 20px;
+}
+
+.message-container .top .icons img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.message-container .center {
+  padding: 20px;
+  flex: 1;
+  border-top: 1px solid #dddddd35;
+  overflow-y: auto;
+}
+
+.message-container .center .message {
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.message-container .center .message.own {
+  align-self: flex-end;
+  text-align: right;
+}
+
+.message-container .center .message.own .texts p {
+  background-color: #5183fe;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.message-container .center img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-container .center .texts img {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.message-container .center .texts p {
+  padding: 20px;
+  background-color: rgba(17, 25, 40, 0.3);
+  border-radius: 10px;
+}
+
+.message-container .center .texts span {
+  font-size: 13px;
+}
+
+.message-container .bottom {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #dddddd35;
+  gap: 20px;
+}
+
+.message-container .bottom .icons {
+  display: flex;
+  gap: 20px;
+}
+
+.message-container .bottom .icons img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.message-container .bottom input {
+  flex: 1;
+  background-color: rgba(17, 25, 40, 0.75);
+  border: none;
+  outline: none;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.message-container .bottom .emoji {
+  position: relative;
+}
+
+.message-container .bottom .picker {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+}
+
+.message-container .bottom .sendButton {
+  background-color: #5183fe;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.message-container .bottom .sendButton:hover {
+  background-color: #4267b2;
+}
