@@ -32,7 +32,7 @@ const CalendarComponent = () => {
             db,
             "users",
             currentUser.uid,
-            "events"
+            "events",
           );
           const querySnapshot = await getDocs(eventsCollection);
           const eventsList = querySnapshot.docs.map((doc) => ({
@@ -65,7 +65,7 @@ const CalendarComponent = () => {
         const timeB = hoursB * 60 + minutesB; // Time in minutes
 
         return timeA - timeB;
-      })
+      }),
     );
   }, [selectedDate, events]);
 
@@ -83,7 +83,7 @@ const CalendarComponent = () => {
           db,
           "users",
           currentUser.uid,
-          "events"
+          "events",
         );
         await addDoc(eventsCollection, {
           name: newEvent.name,
@@ -132,8 +132,18 @@ const CalendarComponent = () => {
       <Navbar />
       <div className="calendar-container">
         <div className="calendar-content">
+          <div className="calender-nav">
           <div className="calendar">
             <Calendar onChange={onDateChange} value={selectedDate} />
+          </div>
+          <div className="calendar-controls">
+          <button
+            className="add-event-button"
+            onClick={() => setShowAddEvent(!showAddEvent)}
+          >
+            Add Event
+          </button>
+        </div>
           </div>
           <div className="events-list">
             <h2>Events on {selectedDate.toDateString()}</h2>
@@ -148,14 +158,6 @@ const CalendarComponent = () => {
               ))}
             </ul>
           </div>
-        </div>
-        <div className="calendar-controls">
-          <button
-            className="add-event-button"
-            onClick={() => setShowAddEvent(!showAddEvent)}
-          >
-            Add Event
-          </button>
         </div>
         {showAddEvent && (
           <div className={`add-event-form ${showAddEvent ? "expanded" : ""}`}>

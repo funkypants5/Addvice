@@ -2,6 +2,7 @@ import Discovery from "./components/discovery/discovery";
 import Login from "./components/auth/login/login";
 import Register from "./components/auth/register/register";
 import ViewProfile from "./components/viewProfile";
+import ChatApp from "./components/chatroom/chatroom";
 
 import Header from "./components/header/header";
 import Profile from "./components/updateProfile";
@@ -24,6 +25,10 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/chatapp",
+      element: <ChatApp />,
     },
     {
       path: "/register",
