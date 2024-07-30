@@ -44,6 +44,7 @@ const Mentorship = () => {
         <p>Gender: {person.gender}</p>
         <p>Interests: {person.interests}</p>
         <p>About Me: {person.AboutMe}</p>
+        <p>Telegram Handle: {person.tele}</p>
       </div>
     </div>
   );

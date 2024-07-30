@@ -25,6 +25,7 @@ const Profile = () => {
     role: "",
     gender: "",
     AboutMe: "",
+    tele: "",
     avatar: "",
   });
 
@@ -118,14 +119,14 @@ const Profile = () => {
                     ) : (
                       <div>Upload your profile picture here!</div>
                     )}
-                    <input
+                  </label>
+                </div>
+                <input
                       type="file"
                       name="avatar"
                       accept="image/*"
                       onChange={handleChange}
                     />
-                  </label>
-                </div>
               </section>
               <section className="details-section">
                 <label htmlFor="name">Name</label>
@@ -218,6 +219,15 @@ const Profile = () => {
                   className=""
                   required
                   placeholder="Tell us about yourself..."
+                />
+                <label htmlFor="Telegram">Telegram Handle</label>
+                <textarea
+                  id="tele"
+                  name="tele"
+                  value={formData.tele}
+                  onChange={handleChange}
+                  className=""
+                  placeholder="Your tele handle will only be shown to your mentors/mentees"
                 />
                 <button type="submit" className="update-button">
                   Update Profile

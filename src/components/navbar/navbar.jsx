@@ -14,20 +14,20 @@ const Navbar = () => {
         </button>
         {isDropdownOpen && (
           <div className="dropdown">
-            <a href="/discovery" className="dropdown-item">
-              Discover
-            </a>
-            <a href="/messagingpage" className="dropdown-item">
-              Message
+            <a href="/chatApp" className="dropdown-item">
+              Chat
             </a>
             <a href="/currentMentorMentees" className="dropdown-item">
-              Current Mentors/Mentees
-            </a>
-            <a href="/profile" className="dropdown-item">
-              Profile
+              Connections
             </a>
             <a href="/Calendar" className="dropdown-item">
               Calendar
+            </a>
+            <a href="/discovery" className="dropdown-item">
+              Discover
+            </a>
+            <a href="/profile" className="dropdown-item">
+              Profile
             </a>
           </div>
         )}
