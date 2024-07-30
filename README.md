@@ -8,6 +8,7 @@ open terminal and run the following codes
 npm install
 npm install -g firebase-tools  
 npm install firebase  
+npm install react-firebase-hooks
 npm install react-router-dom
 npm install react-bootstrap bootstrap
 npm install react-datepicker firebase
